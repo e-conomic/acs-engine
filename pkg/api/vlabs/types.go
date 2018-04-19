@@ -449,6 +449,8 @@ type AgentPoolProfile struct {
 	CustomNodeLabels      map[string]string `json:"customNodeLabels,omitempty"`
 	PreProvisionExtension *Extension        `json:"preProvisionExtension"`
 	Extensions            []Extension       `json:"extensions"`
+	SinglePlacementGroup  bool              `json:"singlePlacementGroup,omitempty"`
+	AvailabilityZones     []string          `json:"availabilityZones,omitempty"`
 }
 
 // AgentPoolProfileRole represents an agent role
@@ -597,6 +599,17 @@ func (a *AgentPoolProfile) IsStorageAccount() bool {
 // HasDisks returns true if the customer specified disks
 func (a *AgentPoolProfile) HasDisks() bool {
 	return len(a.DiskSizesGB) > 0
+}
+
+// UseMultiplePlacementGroup returns true if the customer specified multiple placement groups
+func (a *AgentPoolProfile) UseMultiplePlacementGroup() bool {
+	return !a.SinglePlacementGroup
+}
+
+// GetAvailabilityZones returns true if the customer specified availability zones
+func (a *AgentPoolProfile) GetAvailabilityZones() []string {
+	fmt.Println(a.AvailabilityZones)
+	return a.AvailabilityZones
 }
 
 // GetSubnet returns the read-only subnet for the agent pool

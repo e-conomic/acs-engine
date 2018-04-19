@@ -1,6 +1,7 @@
 package api
 
 import (
+	"fmt"
 	neturl "net/url"
 	"strconv"
 	"strings"
@@ -449,6 +450,8 @@ type AgentPoolProfile struct {
 	Extensions                   []Extension          `json:"extensions"`
 	KubernetesConfig             *KubernetesConfig    `json:"kubernetesConfig,omitempty"`
 	ImageRef                     *ImageReference      `json:"imageReference,omitempty"`
+	AvailabilityZones            []string             `json:"availabilityZones,omitempty"`
+	SinglePlacementGroup         bool                 `json:"singlePlacementGroup,omitempty"`
 }
 
 // AgentPoolProfileRole represents an agent role
@@ -766,6 +769,18 @@ func (a *AgentPoolProfile) IsStorageAccount() bool {
 // HasDisks returns true if the customer specified disks
 func (a *AgentPoolProfile) HasDisks() bool {
 	return len(a.DiskSizesGB) > 0
+}
+
+// UseMultiplePlacementGroups returns true if the customer specified multiple placement groups
+func (a *AgentPoolProfile) UseMultiplePlacementGroups() bool {
+	fmt.Println(a.SinglePlacementGroup)
+	return !a.SinglePlacementGroup
+}
+
+// GetAvailabilityZones returns true if the customer specified availability zones
+func (a *AgentPoolProfile) GetAvailabilityZones() []string {
+	fmt.Println(a.AvailabilityZones)
+	return a.AvailabilityZones
 }
 
 // HasSecrets returns true if the customer specified secrets to install
