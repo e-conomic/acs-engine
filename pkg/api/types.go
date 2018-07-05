@@ -1,7 +1,6 @@
 package api
 
 import (
-	"fmt"
 	neturl "net/url"
 	"strconv"
 	"strings"
@@ -392,6 +391,7 @@ type MasterProfile struct {
 	KubernetesConfig         *KubernetesConfig `json:"kubernetesConfig,omitempty"`
 	ImageRef                 *ImageReference   `json:"imageReference,omitempty"`
 	CustomFiles              *[]CustomFile     `json:"customFiles,omitempty"`
+	AvailabilityZones        []string          `json:"availabilityZones,omitempty"`
 
 	// Master LB public endpoint/FQDN with port
 	// The format will be FQDN:2376
@@ -773,14 +773,8 @@ func (a *AgentPoolProfile) HasDisks() bool {
 
 // UseMultiplePlacementGroups returns true if the customer specified multiple placement groups
 func (a *AgentPoolProfile) UseMultiplePlacementGroups() bool {
-	fmt.Println(a.SinglePlacementGroup)
+	// fmt.Println(a.SinglePlacementGroup)
 	return !a.SinglePlacementGroup
-}
-
-// GetAvailabilityZones returns true if the customer specified availability zones
-func (a *AgentPoolProfile) GetAvailabilityZones() []string {
-	fmt.Println(a.AvailabilityZones)
-	return a.AvailabilityZones
 }
 
 // HasSecrets returns true if the customer specified secrets to install

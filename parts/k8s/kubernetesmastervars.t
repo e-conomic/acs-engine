@@ -198,6 +198,9 @@
          "[parameters('location')]"
     ],
     "location": "[variables('locations')[mod(add(2,length(parameters('location'))),add(1,length(parameters('location'))))]]",
+    {{ if HaveMasterAvailabilityZones}}
+    "zones": {{GetMasterAvailabilityZones}},
+    {{ end }}
     "masterAvailabilitySet": "[concat('master-availabilityset-', variables('nameSuffix'))]",
     "nameSuffix": "[parameters('nameSuffix')]",
     "orchestratorName": "[parameters('orchestratorName')]",

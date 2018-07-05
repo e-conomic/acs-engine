@@ -670,6 +670,36 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 		"GetGPUDriversInstallScript": func(profile *api.AgentPoolProfile) string {
 			return getGPUDriversInstallScript(profile)
 		},
+		"HaveAvailabilityZones": func(profile *api.AgentPoolProfile) bool {
+			return len(profile.AvailabilityZones) > 0
+		},
+		"GetAvailabilityZones": func(profile *api.AgentPoolProfile) string {
+			var zones string
+			for i, z := range profile.AvailabilityZones {
+				if i == len(profile.AvailabilityZones)-1 {
+					zones += fmt.Sprintf("%q", z)
+				} else {
+					zones += fmt.Sprintf("%q,", z)
+				}
+			}
+			zones = fmt.Sprintf("[%s]", zones)
+			return zones
+		},
+		"HaveMasterAvailabilityZones": func() bool {
+			return len(cs.Properties.MasterProfile.AvailabilityZones) > 0
+		},
+		"GetMasterAvailabilityZones": func() string {
+			var zones string
+			for i, z := range cs.Properties.MasterProfile.AvailabilityZones {
+				if i == len(cs.Properties.MasterProfile.AvailabilityZones)-1 {
+					zones += fmt.Sprintf("%q", z)
+				} else {
+					zones += fmt.Sprintf("%q,", z)
+				}
+			}
+			zones = fmt.Sprintf("[%s]", zones)
+			return zones
+		},
 		"HasLinuxSecrets": func() bool {
 			return cs.Properties.LinuxProfile.HasSecrets()
 		},

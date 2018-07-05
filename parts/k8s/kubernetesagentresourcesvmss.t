@@ -26,8 +26,8 @@
       "poolName" : "{{.Name}}"
     },
     "location": "[variables('location')]",
-    {{ if .GetAvailabilityZones}}
-    "zones": "{{.GetAvailabilityZones}}",
+    {{ if HaveAvailabilityZones .}}
+    "zones": {{GetAvailabilityZones .}},
     {{ end }}
     "name": "[variables('{{.Name}}VMNamePrefix')]",
     {{if UseManagedIdentity}}

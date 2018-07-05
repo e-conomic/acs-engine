@@ -893,6 +893,7 @@ func convertMasterProfileToVLabs(api *MasterProfile, vlabsProfile *vlabs.MasterP
 	vlabsProfile.SetSubnet(api.Subnet)
 	vlabsProfile.FQDN = api.FQDN
 	vlabsProfile.StorageProfile = api.StorageProfile
+	vlabsProfile.AvailabilityZones = api.AvailabilityZones
 	if api.PreprovisionExtension != nil {
 		vlabsExtension := &vlabs.Extension{}
 		convertExtensionToVLabs(api.PreprovisionExtension, vlabsExtension)

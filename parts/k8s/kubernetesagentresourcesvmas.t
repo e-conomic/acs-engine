@@ -83,6 +83,9 @@
 {{if .IsManagedDisks}}
    {
       "location": "[variables('location')]",
+      {{ if .HaveAvailabilityZones}}
+      "zones": {{.GetAvailabilityZones}},
+      {{ end }}
       "name": "[variables('{{.Name}}AvailabilitySet')]",
       "apiVersion": "[variables('apiVersionStorageManagedDisks')]",
       "properties":
@@ -346,4 +349,4 @@
         }
       }
     }
-    
+

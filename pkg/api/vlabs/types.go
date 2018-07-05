@@ -382,6 +382,7 @@ type MasterProfile struct {
 	KubernetesConfig         *KubernetesConfig `json:"kubernetesConfig,omitempty"`
 	ImageRef                 *ImageReference   `json:"imageReference,omitempty"`
 	CustomFiles              *[]CustomFile     `json:"customFiles,omitempty"`
+	AvailabilityZones        []string          `json:"availabilityZones,omitempty"`
 
 	// subnet is internal
 	subnet string
@@ -604,12 +605,6 @@ func (a *AgentPoolProfile) HasDisks() bool {
 // UseMultiplePlacementGroup returns true if the customer specified multiple placement groups
 func (a *AgentPoolProfile) UseMultiplePlacementGroup() bool {
 	return !a.SinglePlacementGroup
-}
-
-// GetAvailabilityZones returns true if the customer specified availability zones
-func (a *AgentPoolProfile) GetAvailabilityZones() []string {
-	fmt.Println(a.AvailabilityZones)
-	return a.AvailabilityZones
 }
 
 // GetSubnet returns the read-only subnet for the agent pool
