@@ -193,14 +193,12 @@
     "apiVersionDefault": "2016-03-30",
     "apiVersionAcceleratedNetworking": "2018-04-01",
     "apiVersionLinkDefault": "2015-01-01",
+    "apiVersionPublicIP": "2018-05-01",
     "locations": [
          "[resourceGroup().location]",
          "[parameters('location')]"
     ],
     "location": "[variables('locations')[mod(add(2,length(parameters('location'))),add(1,length(parameters('location'))))]]",
-    {{ if HaveMasterAvailabilityZones}}
-    "zones": {{GetMasterAvailabilityZones}},
-    {{ end }}
     "masterAvailabilitySet": "[concat('master-availabilityset-', variables('nameSuffix'))]",
     "nameSuffix": "[parameters('nameSuffix')]",
     "orchestratorName": "[parameters('orchestratorName')]",

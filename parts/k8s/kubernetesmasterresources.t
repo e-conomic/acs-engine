@@ -1,3 +1,4 @@
+{{if not HaveMasterAvailabilityZones}}
 {{if .MasterProfile.IsManagedDisks}}
     {
       "apiVersion": "[variables('apiVersionStorageManagedDisks')]",
@@ -11,7 +12,9 @@
         },
       "type": "Microsoft.Compute/availabilitySets"
     },
+{{end}}
 {{else if .MasterProfile.IsStorageAccount}}
+{{if not HaveMasterAvailabilityZones}}
     {
       "apiVersion": "[variables('apiVersionDefault')]",
       "location": "[variables('location')]",
@@ -19,6 +22,7 @@
       "properties": {},
       "type": "Microsoft.Compute/availabilitySets"
     },
+{{end}}
     {
       "apiVersion": "[variables('apiVersionStorage')]",
 {{if not IsPrivateCluster}}
@@ -141,8 +145,11 @@
 {{end}}
 {{if not IsPrivateCluster}}
     {
-      "apiVersion": "[variables('apiVersionDefault')]",
+      "apiVersion": "[variables('apiVersionPublicIP')]",
       "location": "[variables('location')]",
+      {{ if HaveMasterAvailabilityZones}}
+      "zones": {{GetMasterAvailabilityZones}},
+      {{ end }}
       "name": "[variables('masterPublicIPAddressName')]",
       "properties": {
         "dnsSettings": {
@@ -514,7 +521,7 @@
           "name": "Basic"
       },
       "name": "[variables('jumpboxPublicIpAddressName')]",
-      "apiVersion": "[variables('apiVersionDefault')]",
+      "apiVersion": "[variables('apiVersionPublicIP')]",
       "location": "[variables('location')]",
       "properties": {
           "dnsSettings": {
@@ -637,7 +644,7 @@
        "apiVersion": "[variables('apiVersionKeyVault')]",
        "location": "[variables('location')]",
        {{ if UseManagedIdentity}}
-       "dependsOn": 
+       "dependsOn":
        [
           {{$max := .MasterProfile.Count}}
           {{$c := subtract $max 1}}
@@ -670,7 +677,7 @@
            }
          ],
  {{else}}
-         "accessPolicies": 
+         "accessPolicies":
          [
           {{$max := .MasterProfile.Count}}
           {{$c := subtract $max 1}}
@@ -728,7 +735,9 @@
       },
       "dependsOn": [
         "[concat('Microsoft.Network/networkInterfaces/', variables('masterVMNamePrefix'), 'nic-', copyIndex(variables('masterOffset')))]"
+{{if not HaveMasterAvailabilityZones}}
         ,"[concat('Microsoft.Compute/availabilitySets/',variables('masterAvailabilitySet'))]"
+{{end}}
 {{if .MasterProfile.IsStorageAccount}}
         ,"[variables('masterStorageAccountName')]"
 {{end}}
@@ -742,6 +751,9 @@
         "poolName" : "master"
       },
       "location": "[variables('location')]",
+      {{ if HaveMasterAvailabilityZones}}
+      "zones": {{GetMasterAvailabilityZones}},
+      {{ end }}
       "name": "[concat(variables('masterVMNamePrefix'), copyIndex(variables('masterOffset')))]",
       {{if UseManagedIdentity}}
       "identity": {
@@ -756,9 +768,11 @@
       },
       {{end}}
       "properties": {
+{{if not HaveMasterAvailabilityZones}}
         "availabilitySet": {
           "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('masterAvailabilitySet'))]"
         },
+{{end}}
         "hardwareProfile": {
           "vmSize": "[variables('masterVMSize')]"
         },
