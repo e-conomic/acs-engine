@@ -602,11 +602,6 @@ func (a *AgentPoolProfile) HasDisks() bool {
 	return len(a.DiskSizesGB) > 0
 }
 
-// UseMultiplePlacementGroup returns true if the customer specified multiple placement groups
-func (a *AgentPoolProfile) UseMultiplePlacementGroup() bool {
-	return !a.SinglePlacementGroup
-}
-
 // GetSubnet returns the read-only subnet for the agent pool
 func (a *AgentPoolProfile) GetSubnet() string {
 	return a.subnet

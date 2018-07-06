@@ -771,12 +771,6 @@ func (a *AgentPoolProfile) HasDisks() bool {
 	return len(a.DiskSizesGB) > 0
 }
 
-// UseMultiplePlacementGroups returns true if the customer specified multiple placement groups
-func (a *AgentPoolProfile) UseMultiplePlacementGroups() bool {
-	// fmt.Println(a.SinglePlacementGroup)
-	return !a.SinglePlacementGroup
-}
-
 // HasSecrets returns true if the customer specified secrets to install
 func (w *WindowsProfile) HasSecrets() bool {
 	return len(w.Secrets) > 0

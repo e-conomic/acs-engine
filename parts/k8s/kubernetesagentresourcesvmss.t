@@ -41,7 +41,7 @@
       "name": "[variables('{{.Name}}VMSize')]"
     },
     "properties": {
-      {{if .UseMultiplePlacementGroups}}
+      {{if not (UseSinglePlacementGroup .)}}
       "singlePlacementGroup": false,
       {{end}}
       "overprovision": false,

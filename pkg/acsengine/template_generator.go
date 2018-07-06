@@ -670,6 +670,9 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 		"GetGPUDriversInstallScript": func(profile *api.AgentPoolProfile) string {
 			return getGPUDriversInstallScript(profile)
 		},
+		"UseSinglePlacementGroup": func(profile *api.AgentPoolProfile) bool {
+			return profile.SinglePlacementGroup
+		},
 		"HaveAvailabilityZones": func(profile *api.AgentPoolProfile) bool {
 			return len(profile.AvailabilityZones) > 0
 		},
