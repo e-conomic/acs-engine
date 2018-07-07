@@ -177,6 +177,9 @@
     "masterPrivateIp": "[parameters('firstConsecutiveStaticIP')]",
     "masterVMSize": "[parameters('masterVMSize')]",
 {{end}}
+{{ if HaveMasterAvailabilityZones}}
+    "masterAvailabilityZones": "[parameters('masterAvailabilityZones')]",
+{{end}}
     "sshPublicKeyData": "[parameters('sshRSAPublicKey')]",
 {{if .HasAadProfile}}
     "aadTenantId": "[parameters('aadTenantId')]",

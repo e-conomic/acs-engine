@@ -676,32 +676,48 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 		"HaveAvailabilityZones": func(profile *api.AgentPoolProfile) bool {
 			return len(profile.AvailabilityZones) > 0
 		},
-		"GetAvailabilityZones": func(profile *api.AgentPoolProfile) string {
-			var zones string
-			for i, z := range profile.AvailabilityZones {
-				if i == len(profile.AvailabilityZones)-1 {
-					zones += fmt.Sprintf("%q", z)
-				} else {
-					zones += fmt.Sprintf("%q,", z)
+		"GetMinAvailabilityZone": func(profile *api.AgentPoolProfile) int {
+			min, _ := strconv.Atoi(profile.AvailabilityZones[0])
+			for _, z := range profile.AvailabilityZones {
+				i, _ := strconv.Atoi(z)
+				if min > i {
+					min = i
 				}
 			}
-			zones = fmt.Sprintf("[%s]", zones)
-			return zones
+			return min
+		},
+		"GetMaxAvailabilityZone": func(profile *api.AgentPoolProfile) int {
+			max, _ := strconv.Atoi(profile.AvailabilityZones[0])
+			for _, z := range profile.AvailabilityZones {
+				i, _ := strconv.Atoi(z)
+				if max < i {
+					max = i
+				}
+			}
+			return max
 		},
 		"HaveMasterAvailabilityZones": func() bool {
 			return len(cs.Properties.MasterProfile.AvailabilityZones) > 0
 		},
-		"GetMasterAvailabilityZones": func() string {
-			var zones string
-			for i, z := range cs.Properties.MasterProfile.AvailabilityZones {
-				if i == len(cs.Properties.MasterProfile.AvailabilityZones)-1 {
-					zones += fmt.Sprintf("%q", z)
-				} else {
-					zones += fmt.Sprintf("%q,", z)
+		"GetMasterMinAvailabilityZone": func() int {
+			min, _ := strconv.Atoi(cs.Properties.MasterProfile.AvailabilityZones[0])
+			for _, z := range cs.Properties.MasterProfile.AvailabilityZones {
+				i, _ := strconv.Atoi(z)
+				if min > i {
+					min = i
 				}
 			}
-			zones = fmt.Sprintf("[%s]", zones)
-			return zones
+			return min
+		},
+		"GetMasterMaxAvailabilityZone": func() int {
+			max, _ := strconv.Atoi(cs.Properties.MasterProfile.AvailabilityZones[0])
+			for _, z := range cs.Properties.MasterProfile.AvailabilityZones {
+				i, _ := strconv.Atoi(z)
+				if max < i {
+					max = i
+				}
+			}
+			return max
 		},
 		"HasLinuxSecrets": func() bool {
 			return cs.Properties.LinuxProfile.HasSecrets()

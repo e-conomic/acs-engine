@@ -148,7 +148,7 @@
       "apiVersion": "[variables('apiVersionPublicIP')]",
       "location": "[variables('location')]",
       {{ if HaveMasterAvailabilityZones}}
-      "zones": {{GetMasterAvailabilityZones}},
+      "zones": "[variables('masterAvailabilityZones')]",
       {{ end }}
       "name": "[variables('masterPublicIPAddressName')]",
       "properties": {
@@ -752,7 +752,7 @@
       },
       "location": "[variables('location')]",
       {{ if HaveMasterAvailabilityZones}}
-      "zones": {{GetMasterAvailabilityZones}},
+      "zones": "[split(string(add(mod(copyIndex(),{{GetMasterMaxAvailabilityZone}}),{{GetMasterMinAvailabilityZone}})), ',')]",
       {{ end }}
       "name": "[concat(variables('masterVMNamePrefix'), copyIndex(variables('masterOffset')))]",
       {{if UseManagedIdentity}}
