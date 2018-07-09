@@ -81,7 +81,7 @@
       "type": "Microsoft.Network/networkInterfaces"
     },
 {{if .IsManagedDisks}}
-{{if not HaveAvailabilityZones}}
+{{if not (HaveAvailabilityZones .)}}
    {
       "location": "[variables('location')]",
       "name": "[variables('{{.Name}}AvailabilitySet')]",
@@ -139,7 +139,7 @@
       "type": "Microsoft.Storage/storageAccounts"
     },
     {{end}}
-{{if not HaveAvailabilityZones}}
+{{if not (HaveAvailabilityZones .)}}
     {
       "location": "[variables('location')]",
       "name": "[variables('{{.Name}}AvailabilitySet')]",
@@ -168,7 +168,7 @@
   {{end}}
 {{end}}
         "[concat('Microsoft.Network/networkInterfaces/', variables('{{.Name}}VMNamePrefix'), 'nic-', copyIndex(variables('{{.Name}}Offset')))]",
-        {{if not HaveAvailabilityZones}}
+        {{if not (HaveAvailabilityZones .)}}
         "[concat('Microsoft.Compute/availabilitySets/', variables('{{.Name}}AvailabilitySet'))]"
         {{end}}
       ],
@@ -181,7 +181,7 @@
         "poolName" : "{{.Name}}"
       },
       "location": "[variables('location')]",
-      {{if HaveAvailabilityZones}}
+      {{if HaveAvailabilityZones .}}
       "zones": "[split(string(add(mod(copyIndex(),{{GetMaxAvailabilityZone .}}),{{GetMinAvailabilityZone .}})), ',')]",
       {{ end }}
       "name": "[concat(variables('{{.Name}}VMNamePrefix'), copyIndex(variables('{{.Name}}Offset')))]",
@@ -198,7 +198,7 @@
       },
       {{end}}
       "properties": {
-        {{if not HaveAvailabilityZones}}
+        {{if not (HaveAvailabilityZones .)}}
         "availabilitySet": {
           "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('{{.Name}}AvailabilitySet'))]"
         },

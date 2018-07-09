@@ -148,21 +148,33 @@
       "apiVersion": "[variables('apiVersionNetwork')]",
       "location": "[variables('location')]",
       "name": "[variables('masterPublicIPAddressName')]",
+      {{if HaveMasterAvailabilityZones}}
+      "sku": {
+          "name": "Standard"
+      },
+      {{end}}
       "properties": {
         "dnsSettings": {
           "domainNameLabel": "[variables('masterFqdnPrefix')]"
         },
-        "publicIPAllocationMethod": "Dynamic"
+        {{if HaveMasterAvailabilityZones}}
+        "publicIPAllocationMethod": "Static"
+        {{end}}
       },
       "type": "Microsoft.Network/publicIPAddresses"
     },
     {
-      "apiVersion": "[variables('apiVersionDefault')]",
+      "apiVersion": "[variables('apiVersionNetwork')]",
       "dependsOn": [
         "[concat('Microsoft.Network/publicIPAddresses/', variables('masterPublicIPAddressName'))]"
       ],
       "location": "[variables('location')]",
       "name": "[variables('masterLbName')]",
+      {{if HaveMasterAvailabilityZones}}
+      "sku": {
+          "name": "Standard"
+      },
+      {{end}}
       "properties": {
         "backendAddressPools": [
           {
@@ -514,9 +526,11 @@
     },
     {
       "type": "Microsoft.Network/publicIpAddresses",
+      {{if HaveMasterAvailabilityZones}}
       "sku": {
-          "name": "Basic"
+          "name": "Standard"
       },
+      {{end}}
       "name": "[variables('jumpboxPublicIpAddressName')]",
       "apiVersion": "[variables('apiVersionPublicIP')]",
       "location": "[variables('location')]",
