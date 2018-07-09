@@ -145,11 +145,8 @@
 {{end}}
 {{if not IsPrivateCluster}}
     {
-      "apiVersion": "[variables('apiVersionPublicIP')]",
+      "apiVersion": "[variables('apiVersionNetwork')]",
       "location": "[variables('location')]",
-      {{ if HaveMasterAvailabilityZones}}
-      "zones": "[variables('masterAvailabilityZones')]",
-      {{ end }}
       "name": "[variables('masterPublicIPAddressName')]",
       "properties": {
         "dnsSettings": {
@@ -567,7 +564,7 @@
 {{end}}
 {{if gt .MasterProfile.Count 1}}
     {
-      "apiVersion": "[variables('apiVersionDefault')]",
+      "apiVersion": "[variables('apiVersionNetwork')]",
       "dependsOn": [
 {{if .MasterProfile.IsCustomVNET}}
         "[variables('nsgID')]"
@@ -577,6 +574,11 @@
       ],
       "location": "[variables('location')]",
       "name": "[variables('masterInternalLbName')]",
+      {{if HaveMasterAvailabilityZones}}
+      "sku": {
+          "name": "Standard"
+      },
+      {{end}}
       "properties": {
         "backendAddressPools": [
           {
