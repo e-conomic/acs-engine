@@ -182,7 +182,7 @@
       },
       "location": "[variables('location')]",
       {{if HaveAvailabilityZones .}}
-      "zones": "[split(string(add(mod(copyIndex(),{{GetMaxAvailabilityZone .}}),{{GetMinAvailabilityZone .}})), ',')]",
+      "zones": "[split(string(add(mod(copyIndex(),{{GetAvailabilityZoneLength .}}),{{GetMinAvailabilityZone .}})), ',')]",
       {{ end }}
       "name": "[concat(variables('{{.Name}}VMNamePrefix'), copyIndex(variables('{{.Name}}Offset')))]",
       {{if UseManagedIdentity}}

@@ -156,9 +156,9 @@
       "properties": {
         "dnsSettings": {
           "domainNameLabel": "[variables('masterFqdnPrefix')]"
-        },
+        }
         {{if HaveMasterAvailabilityZones}}
-        "publicIPAllocationMethod": "Static"
+        ,"publicIPAllocationMethod": "Static"
         {{end}}
       },
       "type": "Microsoft.Network/publicIPAddresses"
@@ -768,7 +768,7 @@
       },
       "location": "[variables('location')]",
       {{ if HaveMasterAvailabilityZones}}
-      "zones": "[split(string(add(mod(copyIndex(),{{GetMasterMaxAvailabilityZone}}),{{GetMasterMinAvailabilityZone}})), ',')]",
+      "zones": "[split(string(add(mod(copyIndex(),{{GetMasterAvailabilityZoneLength}}),{{GetMasterMinAvailabilityZone}})), ',')]",
       {{ end }}
       "name": "[concat(variables('masterVMNamePrefix'), copyIndex(variables('masterOffset')))]",
       {{if UseManagedIdentity}}
@@ -784,11 +784,11 @@
       },
       {{end}}
       "properties": {
-{{if not HaveMasterAvailabilityZones}}
+        {{if not HaveMasterAvailabilityZones}}
         "availabilitySet": {
           "id": "[resourceId('Microsoft.Compute/availabilitySets',variables('masterAvailabilitySet'))]"
         },
-{{end}}
+        {{end}}
         "hardwareProfile": {
           "vmSize": "[variables('masterVMSize')]"
         },

@@ -686,15 +686,8 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 			}
 			return min
 		},
-		"GetMaxAvailabilityZone": func(profile *api.AgentPoolProfile) int {
-			max, _ := strconv.Atoi(profile.AvailabilityZones[0])
-			for _, z := range profile.AvailabilityZones {
-				i, _ := strconv.Atoi(z)
-				if max < i {
-					max = i
-				}
-			}
-			return max
+		"GetAvailabilityZoneLength": func(profile *api.AgentPoolProfile) int {
+			return len(profile.AvailabilityZones)
 		},
 		"HaveMasterAvailabilityZones": func() bool {
 			return len(cs.Properties.MasterProfile.AvailabilityZones) > 0
@@ -709,15 +702,8 @@ func (t *TemplateGenerator) getTemplateFuncMap(cs *api.ContainerService) templat
 			}
 			return min
 		},
-		"GetMasterMaxAvailabilityZone": func() int {
-			max, _ := strconv.Atoi(cs.Properties.MasterProfile.AvailabilityZones[0])
-			for _, z := range cs.Properties.MasterProfile.AvailabilityZones {
-				i, _ := strconv.Atoi(z)
-				if max < i {
-					max = i
-				}
-			}
-			return max
+		"GetMasterAvailabilityZoneLength": func() int {
+			return len(cs.Properties.MasterProfile.AvailabilityZones)
 		},
 		"HasLinuxSecrets": func() bool {
 			return cs.Properties.LinuxProfile.HasSecrets()
