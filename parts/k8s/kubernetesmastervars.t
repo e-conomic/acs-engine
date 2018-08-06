@@ -189,6 +189,9 @@
     "masterPrivateIp": "[parameters('firstConsecutiveStaticIP')]",
     "masterVMSize": "[parameters('masterVMSize')]",
 {{end}}
+{{ if HaveMasterAvailabilityZones}}
+    "masterAvailabilityZones": "[parameters('masterAvailabilityZones')]",
+{{end}}
     "sshPublicKeyData": "[parameters('sshRSAPublicKey')]",
 {{if .HasAadProfile}}
     "aadTenantId": "[parameters('aadTenantId')]",
@@ -205,6 +208,7 @@
     "apiVersionDefault": "2016-03-30",
     "apiVersionAcceleratedNetworking": "2018-04-01",
     "apiVersionLinkDefault": "2015-01-01",
+    "apiVersionNetwork": "2018-05-01",
     "locations": [
          "[resourceGroup().location]",
          "[parameters('location')]"

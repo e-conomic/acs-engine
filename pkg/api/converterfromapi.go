@@ -893,6 +893,7 @@ func convertMasterProfileToVLabs(api *MasterProfile, vlabsProfile *vlabs.MasterP
 	vlabsProfile.SetSubnet(api.Subnet)
 	vlabsProfile.FQDN = api.FQDN
 	vlabsProfile.StorageProfile = api.StorageProfile
+	vlabsProfile.AvailabilityZones = api.AvailabilityZones
 	if api.PreprovisionExtension != nil {
 		vlabsExtension := &vlabs.Extension{}
 		convertExtensionToVLabs(api.PreprovisionExtension, vlabsExtension)
@@ -994,6 +995,8 @@ func convertAgentPoolProfileToVLabs(api *AgentPoolProfile, p *vlabs.AgentPoolPro
 	p.FQDN = api.FQDN
 	p.CustomNodeLabels = map[string]string{}
 	p.AcceleratedNetworkingEnabled = api.AcceleratedNetworkingEnabled
+	p.AvailabilityZones = api.AvailabilityZones
+	p.SinglePlacementGroup = api.SinglePlacementGroup
 
 	for k, v := range api.CustomNodeLabels {
 		p.CustomNodeLabels[k] = v
